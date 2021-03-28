@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% include 'header.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+
+<div class = "container">
+    <div class = "row">
+        <div class = "col md-12">
+            <div class = "jumbotron p-3">
+                <h2>Manage <b>Students </b> <button type="button" class="btn btn-warning float-middle"
+                data-toggle="modal" data-target="#mymodal">Add New Students </button> </h2>
+                <table class="table table-hover table-striped">
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Marks</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for row in students %}
+                       <tr>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.marks }}</td>
+                            <td>
+                                <a href="/update/{{ row.id }}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{ row.id }}">Edit</a>
+                                <a href="/delete/{{ row.uid }}" class="btn btn-warning btn-xs">Delete</a>
+                            </td>
+                        </tr>
+                        <div id="modaledit{{ row.id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Update Info</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('update') }}" method="POST">
+                                            <div class="form-group">
+                                                <label>Name:</label>
+                                                <input type="hidden" name="uid" value="{{ row.uid }}">
+                                                <input type="text" class="form-control" name="name" value="{{ row.name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>ID:</label>
+                                                <input type="number" class="form-control" name="idnum" value="{{ row.id }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Marks:</label>
+                                                <input type="number" class="form-control" name="marks" value="{{ row.marks }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </table>
+            </div>
+            <div id="mymodal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Student</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('insert')}}" method="POST">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control" name="name" required="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>ID:</label>
+                                    <input type="number" class="form-control" name="idnum" required="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Marks:</label>
+                                    <input type="number" class="form-control" name="marks" required="1">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" type="submit">Add Student</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
